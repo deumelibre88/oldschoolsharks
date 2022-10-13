@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+	<title>Old School Sharks!</title>
+	<meta charset="UTF-8">
+	<meta name="description" content="Old School Sharks">
+	<meta name="keywords" content="old, school, sharks, registar">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- Favicon -->   
+	<link href="img/favicon.jpg" rel="shortcut icon"/>
+
+	<!-- Google Fonts -->
+	<link href="https://fonts.googleapis.com/css?family=Roboto:400,400i,500,500i,700,700i" rel="stylesheet">
+
+	<!-- Stylesheets -->
+	<link rel="stylesheet" href="css/bootstrap.min.css"/>
+	<link rel="stylesheet" href="css/font-awesome.min.css"/>
+	<link rel="stylesheet" href="css/owl.carousel.css"/>
+	<link rel="stylesheet" href="css/style.css"/>
+	<link rel="stylesheet" href="css/animate.css"/>
+</head>
+<body>
+	<!-- Page Preloder -->
+	<div id="preloder">
+		<div class="loader"></div>
+	</div>
+
+	<!-- Header section -->
+	<header class="header-section">
+		<div class="container">
+			<!-- logo -->
+			<a class="site-logo" href="./">
+				<img src="img/index_logo.png" alt="">
+			</a>
+			<div class="user-panel">
+				<a href="./login">Login</a>
+			</div>
+			<!-- responsive -->
+			<div class="nav-switch">
+				<i class="fa fa-bars"></i>
+			</div>
+			<!-- site menu -->
+			<nav class="main-menu">
+				<ul>
+					<li><a href="./">Home</a></li>
+					<li><a href="./resultados">Resultados</a></li>
+					<li sec:authorize="hasRole('ROLE_ADMIN')"><a href="./criarPartida">Criar Partida</a></li>
+				</ul>
+			</nav>
+		</div>
+	</header>
+
+	<div class="latest-news-section">
+		<div class="ln-title">&#218;ltimas partidas</div>
+		<div class="news-ticker">
+			<div class="news-ticker-contant">
+				<div th:each="p : ${resultados}" class="nt-item">
+				 <span class="strategy">RL</span> 
+					<p th:text="${p.equipaAzul.J1.nick + ' & ' + p.equipaAzul.J2.nick + ' ' + p.golosAzul + '-' + p.golosLaranja + ' ' + p.equipaLaranja.J1.nick + ' & ' + p.equipaLaranja.J2.nick}"th:remove="tag"></p>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<section class="feature-section spad">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-3 col-md-6 p-0">
+					<div class="feature-item set-bg" data-setbg="img/features/1.jpg">
+						<span class="cata new">M&#250;sica</span>
+						<div class="fi-content text-white">
+							<h5><a href="https://youtu.be/2Z4m4lnjxkY?t=105&autoplay=1" target="_blank">nada para ver aqui</a></h5>
+							<p>Melhor m&#250;sica de sempre</p>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-3 col-md-6 p-0">
+					<div class="feature-item set-bg" data-setbg="img/features/2.jpg">
+						<span class="cata strategy">poesia</span>
+						<div class="fi-content text-white">
+							<h5><a href="https://youtu.be/CuUVyWfL4os" target="_blank">nada para ver aqui</a></h5>
+							<p>Conte&#250;do incr&#237;vel </p>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-3 col-md-6 p-0">
+					<div class="feature-item set-bg" data-setbg="img/features/3.jpg">
+						<span class="cata new">culinária</span>
+						<div class="fi-content text-white">
+							<h5><a href="https://youtu.be/EX_w-P0C3ns" target="_blank">nada para ver aqui</a></h5>
+							<p>Receita de peitos de frango </p>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-3 col-md-6 p-0">
+					<div class="feature-item set-bg" data-setbg="img/features/4.jpg">
+						<span class="cata racing">vídeo</span>
+						<div class="fi-content text-white">
+							<h5><a href="https://youtu.be/cOScCHtNWYM?t=1132" target="_blank">nada para ver aqui</a></h5>
+							<p>Vlog de viagem </p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	
+	<!-- Footer section -->
+	<footer class="footer-section navbar fixed-bottom">
+		<div class="container">
+			<ul class="footer-menu">
+				<li><a href="./">Home</a></li>
+				<li><a href="./resultados">Resultados</a></li>
+			</ul>
+			<p class="copyright"><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+</p>
+		</div>
+	</footer>
+	<!-- Footer section end -->
+
+
+	<!--====== Javascripts & Jquery ======-->
+	<script src="js/jquery-3.2.1.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/owl.carousel.min.js"></script>
+	<script src="js/jquery.marquee.min.js"></script>
+	<script src="js/main.js"></script>
+    </body>
+</html>

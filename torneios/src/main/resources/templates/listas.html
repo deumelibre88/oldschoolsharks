@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+	<title>OSS - Resultados!</title>
+	<meta charset="UTF-8">
+	<meta name="description" content="Old School Sharks">
+	<meta name="keywords" content="old, school, sharks, registar">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- Favicon -->   
+	<link href="img/favicon.jpg" rel="shortcut icon"/>
+
+	<!-- Google Fonts -->
+	<link href="https://fonts.googleapis.com/css?family=Roboto:400,400i,500,500i,700,700i" rel="stylesheet">
+
+	<!-- Stylesheets -->
+	<link rel="stylesheet" href="css/bootstrap.min.css"/>
+	<link rel="stylesheet" href="css/font-awesome.min.css"/>
+	<link rel="stylesheet" href="css/owl.carousel.css"/>
+	<link rel="stylesheet" href="css/style.css"/>
+	<link rel="stylesheet" href="css/animate.css"/>
+	<link th:rel="stylesheet" th:href="@{assets/bootstrap-datepicker/css/bootstrap-datepicker.css}"/>
+    <link th:rel="stylesheet" th:href="@{assets/bootstrap-datepicker/css/bootstrap-datepicker.standalone.css}"/>
+    <link th:rel="stylesheet" th:href="@{webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
+    <link th:rel="stylesheet" th:href="@{webjars/font-awesome/5.11.2/css/all.css} "/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>   
+</head>
+<body>
+	<header class="header-section">
+		<div class="container">
+			<!-- logo -->
+			<a class="site-logo" href="index.html">
+				<img src="img/index_logo.png" alt="">
+			</a>
+			<div class="user-panel">
+				<a href="/login">Login</a>
+			</div>
+			<!-- responsive -->
+			<div class="nav-switch">
+				<i class="fa fa-bars"></i>
+			</div>
+			<!-- site menu -->
+			<nav class="main-menu">
+				<ul>
+					<li><a href="/">Home</a></li>
+					<li sec:authorize="hasRole('USER')"><a href="/resultados">Resultados</a></li>
+					<li sec:authorize="hasRole('ROLE_ADMIN')"><a href="/criarPartida">Criar Partida</a></li>
+				</ul>
+			</nav>
+		</div>
+	</header>
+	
+	<div class="container">
+		<h1>Jogadores</h1>
+		<table class="table table-hover table-striped table-sm">
+		    <tr>
+		        <th>Username</th>
+		    </tr>
+		    <tr th:each="j : ${jogadores}">
+		        <td class="align-middle" th:text="${j.nick}"></td>
+		    </tr>
+		</table>
+	
+		<h2>Pesquisa</h2>
+		<nav class="navbar navbar-light bg-light">
+		  <span class="navbar-text">
+		    Pesquisar partidas por jogador ou equipa 
+		  </span>
+		</nav>
+		<form action="#" th:action="@{/resultados}" th:object="${criterios}" method="POST">
+			<div class="row">
+				<div class="form-group col-lg-2 col-md-6">
+					<label>Data:</label>
+					<br />
+					<input id="date" placeholder="DD/MMM/YYY" type="text" th:field="*{data}" class="form-control"/>
+				</div>&nbsp;&nbsp;&nbsp;
+				<div class="form-group col-lg-8 col-md-6">
+					<label>Jogadores:</label><br />
+				    <label th:each="jogador : ${jogadores}" class="btn btn-secondary bs-popover-left">
+						<input type="checkbox" 
+						   th:name="jogadores"
+				           th:text="   ${jogador.nick}"
+				           th:value="${jogador.id}">
+					</label>
+				</div>
+				<div class="form-group align-self-end">
+					<button type="submit" name="pesquisar" class="btn btn-success float-right bs-popover-right bs-popover-top"><i class="fa fa-search"></i> pesquisar</button>
+				</div>
+			</div>
+			
+		</form>
+		
+		
+		<h1>Partidas</h1>
+		<table class="table table-hover table-striped table-sm">
+		    <tr>
+		    	<th>Data</th>
+		        <th>Equipa Azul</th>
+		        <th>Resultado</th>
+		        <th>Equipa Laranja</th>
+		    </tr>
+		    <tr th:each="p : ${partidas}">
+		   		<td class="align-middle" th:text="${#dates.format(p.data, 'dd/MM/yyyy')}"></td>
+		        <td class="align-middle" th:text="${p.equipaAzul.J1.nick + ' & ' + p.equipaAzul.J2.nick}" th:classappend="${p.vencedor == p.equipaAzul.id} ? 'table-success' : ''"></td>
+		        <td class="align-middle" th:text="${p.golosAzul + ' - ' + p.golosLaranja}"></td>
+		        <td class="align-middle" th:text="${p.equipaLaranja.J1.nick + ' & ' + p.equipaLaranja.J2.nick}" th:classappend="${p.vencedor == p.equipaLaranja.id} ? 'table-success' : ''"></td>
+		    </tr>
+		</table>
+	</div>
+
+<!-- Footer section -->
+	<footer class="footer-section">
+		<div class="container">
+			<ul class="footer-menu">
+				<li><a href="/">Home</a></li>
+				<li><a href="/resultados">Resultados</a></li>
+			</ul>
+			<p class="copyright"><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+				Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+				<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+			</p>
+		</div>
+	</footer>
+	<!-- Footer section end -->
+
+
+	<!--====== Javascripts & Jquery ======-->
+	<script src="js/jquery-3.2.1.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/owl.carousel.min.js"></script>
+	<script src="js/jquery.marquee.min.js"></script>
+	<script src="js/main.js"></script>
+	
+	<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+	<!-- Include Date Range Picker -->
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
+	
+	<script>
+	    $(document).ready(function(){
+	      var date_input=$('input[name="data"]'); //our date input has the name "date"
+	      var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
+	      var options={
+	        format: 'dd/mm/yyyy',
+	        container: container,
+	        todayHighlight: true,
+	        autoclose: true,
+	      };
+	      date_input.datepicker(options);
+	    });
+	    
+	    $(function() {
+    	  $('.selectpicker').selectpicker();
+    	});
+	</script>
+</body>
+</html>
