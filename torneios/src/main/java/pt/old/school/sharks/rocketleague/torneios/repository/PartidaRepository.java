@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 
@@ -16,10 +17,10 @@ public interface PartidaRepository extends MongoRepository<Partida, Integer> {
 	List<Partida> getByDate(Date data);
 	
 	@Query("{ $or : [ {'equipaAzul': { $in: ?0 } }, {'equipaLaranja': { $in: ?0 } } ] }")
-	List<Partida> findByEquipas(List<Equipa> equipas);
+	List<Partida> findByEquipas(List<Equipa> equipas, Sort sort);
 	
 	@Query("{ $and : [ {'data': ?0 },   { $or : [ {'equipaAzul': { $in: ?1 } }, {'equipaLaranja': { $in: ?1 } } ] } ] }")
-	List<Partida> findByDataAndEquipas(Date data, List<Equipa> equipas);
+	List<Partida> findByDataAndEquipas(Date data, List<Equipa> equipas, Sort sort);
 	
 	List<Partida> findByOrderByDataDesc(Pageable page);
 }

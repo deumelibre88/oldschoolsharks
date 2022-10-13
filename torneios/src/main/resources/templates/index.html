@@ -4,53 +4,10 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
 	<title>Old School Sharks!</title>
-	<meta charset="UTF-8">
-	<meta name="description" content="Old School Sharks">
-	<meta name="keywords" content="old, school, sharks, registar">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<!-- Favicon -->   
-	<link href="img/favicon.jpg" rel="shortcut icon"/>
-
-	<!-- Google Fonts -->
-	<link href="https://fonts.googleapis.com/css?family=Roboto:400,400i,500,500i,700,700i" rel="stylesheet">
-
-	<!-- Stylesheets -->
-	<link rel="stylesheet" href="css/bootstrap.min.css"/>
-	<link rel="stylesheet" href="css/font-awesome.min.css"/>
-	<link rel="stylesheet" href="css/owl.carousel.css"/>
-	<link rel="stylesheet" href="css/style.css"/>
-	<link rel="stylesheet" href="css/animate.css"/>
+	<div th:replace="fragments/headFragment :: head"></div>
 </head>
 <body>
-	<!-- Page Preloder -->
-	<div id="preloder">
-		<div class="loader"></div>
-	</div>
-
-	<!-- Header section -->
-	<header class="header-section">
-		<div class="container">
-			<!-- logo -->
-			<a class="site-logo" href="./">
-				<img src="img/index_logo.png" alt="">
-			</a>
-			<div class="user-panel">
-				<a href="./login">Login</a>
-			</div>
-			<!-- responsive -->
-			<div class="nav-switch">
-				<i class="fa fa-bars"></i>
-			</div>
-			<!-- site menu -->
-			<nav class="main-menu">
-				<ul>
-					<li><a href="./">Home</a></li>
-					<li><a href="./resultados">Resultados</a></li>
-					<li sec:authorize="hasRole('ROLE_ADMIN')"><a href="./criarPartida">Criar Partida</a></li>
-				</ul>
-			</nav>
-		</div>
-	</header>
+	<div th:replace="fragments/headerFragment :: header"></div>
 
 	<div class="latest-news-section">
 		<div class="ln-title">&#218;ltimas partidas</div>
@@ -96,7 +53,7 @@
 				</div>
 				<div class="col-lg-3 col-md-6 p-0">
 					<div class="feature-item set-bg" data-setbg="img/features/4.jpg">
-						<span class="cata racing">vídeo</span>
+						<span class="cata racing">viagens</span>
 						<div class="fi-content text-white">
 							<h5><a href="https://youtu.be/cOScCHtNWYM?t=1132" target="_blank">nada para ver aqui</a></h5>
 							<p>Vlog de viagem </p>
@@ -107,27 +64,6 @@
 		</div>
 	</section>
 	
-	<!-- Footer section -->
-	<footer class="footer-section navbar fixed-bottom">
-		<div class="container">
-			<ul class="footer-menu">
-				<li><a href="./">Home</a></li>
-				<li><a href="./resultados">Resultados</a></li>
-			</ul>
-			<p class="copyright"><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
-<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-</p>
-		</div>
-	</footer>
-	<!-- Footer section end -->
-
-
-	<!--====== Javascripts & Jquery ======-->
-	<script src="js/jquery-3.2.1.min.js"></script>
-	<script src="js/bootstrap.min.js"></script>
-	<script src="js/owl.carousel.min.js"></script>
-	<script src="js/jquery.marquee.min.js"></script>
-	<script src="js/main.js"></script>
+	<div th:replace="fragments/footerFragment :: footer"></div>
     </body>
 </html>

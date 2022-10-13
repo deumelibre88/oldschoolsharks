@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -72,6 +74,7 @@ public class ResultadosController {
 		}
 		
 		List<Partida> partidas;
+		Sort sort = Sort.by(Sort.Direction.DESC, "data");
 		if(criterios.getData() != null && !criterios.getData().isEmpty()) {
 			//procura só pela data
 			if(equipas.size() < 1) {
@@ -79,12 +82,12 @@ public class ResultadosController {
 			}
 			//procura pela data e pela equipa
 			else {
-				partidas = partidaRepo.findByDataAndEquipas(dataPT.parse(criterios.getData()), equipas);
+				partidas = partidaRepo.findByDataAndEquipas(dataPT.parse(criterios.getData()), equipas, sort);
 			}
 		}
 		//procura só pela equipa
 		else {
-			partidas = partidaRepo.findByEquipas(equipas);
+			partidas = partidaRepo.findByEquipas(equipas, sort);
 		}
 		
 		model.addAttribute("jogadores", jogadorRepo.findAll());
