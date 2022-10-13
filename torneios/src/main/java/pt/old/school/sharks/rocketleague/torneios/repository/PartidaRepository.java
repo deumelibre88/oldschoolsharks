@@ -23,4 +23,6 @@ public interface PartidaRepository extends MongoRepository<Partida, Integer> {
 	List<Partida> findByDataAndEquipas(Date data, List<Equipa> equipas, Sort sort);
 	
 	List<Partida> findByOrderByDataDesc(Pageable page);
+	
+	List<Partida> findByVencedorIn(List<Long> vencedores);
 }

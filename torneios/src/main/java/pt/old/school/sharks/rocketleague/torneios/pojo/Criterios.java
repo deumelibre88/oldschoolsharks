@@ -1,9 +1,6 @@
-package pt.old.school.sharks.rocketleague.torneios.model;
+package pt.old.school.sharks.rocketleague.torneios.pojo;
 
-import java.util.Date;
-import java.util.List;
-
-import org.springframework.format.annotation.DateTimeFormat;
+import pt.old.school.sharks.rocketleague.torneios.model.Jogador;
 
 public class Criterios {
 

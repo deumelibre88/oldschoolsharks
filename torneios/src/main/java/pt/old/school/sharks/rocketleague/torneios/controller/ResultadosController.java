@@ -7,17 +7,16 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import pt.old.school.sharks.rocketleague.torneios.model.Criterios;
 import pt.old.school.sharks.rocketleague.torneios.model.Equipa;
 import pt.old.school.sharks.rocketleague.torneios.model.Jogador;
 import pt.old.school.sharks.rocketleague.torneios.model.Partida;
+import pt.old.school.sharks.rocketleague.torneios.pojo.Criterios;
 import pt.old.school.sharks.rocketleague.torneios.repository.EquipaRepository;
 import pt.old.school.sharks.rocketleague.torneios.repository.JogadorRepository;
 import pt.old.school.sharks.rocketleague.torneios.repository.PartidaRepository;
