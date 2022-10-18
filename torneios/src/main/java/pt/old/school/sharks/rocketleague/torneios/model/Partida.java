@@ -24,10 +24,10 @@ public class Partida {
 	public Partida() {
 		super();
 	}
-	public Partida(int id, Equipa equipaAzul, Equipa equipaLaranja, int golosAzul, int golosLaranja, int vencedor,
+	public Partida(long l, Equipa equipaAzul, Equipa equipaLaranja, int golosAzul, int golosLaranja, long vencedor,
 			Date data) {
 		super();
-		this.id = id;
+		this.id = l;
 		this.equipaAzul = equipaAzul;
 		this.equipaLaranja = equipaLaranja;
 		this.golosAzul = golosAzul;

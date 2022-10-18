@@ -9,6 +9,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,9 +20,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import pt.old.school.sharks.rocketleague.torneios.model.Equipa;
 import pt.old.school.sharks.rocketleague.torneios.model.Jogador;
 import pt.old.school.sharks.rocketleague.torneios.model.Partida;
+import pt.old.school.sharks.rocketleague.torneios.model.PartidaStaging;
 import pt.old.school.sharks.rocketleague.torneios.repository.EquipaRepository;
 import pt.old.school.sharks.rocketleague.torneios.repository.JogadorRepository;
 import pt.old.school.sharks.rocketleague.torneios.repository.PartidaRepository;
+import pt.old.school.sharks.rocketleague.torneios.repository.PartidaStagingRepository;
 import pt.old.school.sharks.rocketleague.torneios.repository.SequenceGeneratorService;
 
 @Controller
@@ -35,6 +38,9 @@ public class PartidasController {
 	
 	@Autowired
 	PartidaRepository partidaRepo;
+	
+	@Autowired
+	PartidaStagingRepository partidaStagingRepo;
 	
 	@Autowired
 	SequenceGeneratorService sequenceService;
@@ -97,6 +103,42 @@ public class PartidasController {
 		setPedidoSubmetidoComSucesso(true);
 		return criarPartida(model);
 	}
+	
+	@PostMapping(value="/criarPartidaProvisoria")
+	public String registarPartidaProvisoria(Model model,
+			@ModelAttribute("data") String data,
+			@RequestParam(value="equipa_azul", required=false) List<String> jogadoresAzul,
+			@RequestParam(value="equipa_laranja", required=false) List<String> jogadoresLaranja, 
+			@ModelAttribute(value="resultado_azul") int resultado_azul, 
+			@ModelAttribute(value="resultado_laranja") int resultado_laranja, Authentication auth) throws ParseException {
+		erros = new ArrayList<String>();
+		validaEquipas(jogadoresAzul, jogadoresLaranja);
+		
+		if(resultado_azul == resultado_laranja) {
+			erros.add("jogo não pode acabar empatado");
+		}
+		
+		if(!erros.isEmpty()) {
+			model.addAttribute("erro", erros.get(0));
+			model.addAttribute("voltar", "./");
+			return "error/error";
+		}
+		
+		setDataPartida(dataPT.parse(data));
+		PartidaStaging p = new PartidaStaging();
+		p.setData(getDataPartida());
+		p.setEquipaAzul(getEquipa(jogadoresAzul));
+		p.setEquipaLaranja(getEquipa(jogadoresLaranja));
+		p.setGolosAzul(resultado_azul);
+		p.setGolosLaranja(resultado_laranja);
+		p.setVencedor(resultado_azul > resultado_laranja ? p.getEquipaAzul().getId() : p.getEquipaLaranja().getId());
+		p.setId(sequenceService.generateSequence("Auto_Increment_Trigger"));
+		p.setCriador(auth.getName());
+		partidaStagingRepo.save(p);
+		
+		setPedidoSubmetidoComSucesso(true);
+		return "redirect:/";
+	}
 
 	private void validaEquipas(List<String> jogadoresAzul, List<String> jogadoresLaranja) {
 		if(jogadoresAzul == null || jogadoresLaranja == null|| jogadoresAzul.size() < 1 || jogadoresLaranja.size() < 1) {
@@ -145,6 +187,17 @@ public class PartidasController {
 		p.setEquipaAzul(eAzul);
 		p.setEquipaLaranja(eLaranja);
 		return p;
+	}
+	
+	private Equipa getEquipa(List<String> selecionados) {
+		List<Jogador> jogadores = jogadorRepo.getByIds(selecionados);
+		if(jogadores.size() == 1) {
+			return equipaRepo.findByJ1(jogadores.get(0));
+		}else if(jogadores.size() == 2) {
+			return equipaRepo.findByJ1AndJ2(jogadores.get(0), jogadores.get(1));
+		}else  {
+			return equipaRepo.findByJ1AndJ2AndJ3(jogadores.get(0), jogadores.get(1), jogadores.get(2));
+		}
 	}
 	
 	public Date getDataPartida() {

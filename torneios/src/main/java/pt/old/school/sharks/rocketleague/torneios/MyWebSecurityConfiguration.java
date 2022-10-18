@@ -27,22 +27,38 @@ public class MyWebSecurityConfiguration {
        public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     	   http.authorizeRequests().antMatchers("/resultados").hasAnyRole("USER").and().formLogin().permitAll();
     	   http.authorizeRequests().antMatchers("/criarPartida").hasAnyRole("ADMIN").and().formLogin().permitAll();
+    	   http.authorizeRequests().antMatchers("/aprovarPartida").hasAnyRole("ADMIN").and().formLogin().permitAll();
                return http.build();
        }
 
        @Bean
        public UserDetailsService userDetailsService() {
-               UserDetails user = User.withDefaultPasswordEncoder()
-                       .username("user")
-                       .password("password")
-                       .roles("USER")
-                       .build();
-               UserDetails admin = User.withDefaultPasswordEncoder()
-                       .username("admin")
-                       .password("password")
-                       .roles("ADMIN", "USER")
-                       .build();
-               return new InMemoryUserDetailsManager(user, admin);
+           UserDetails mmofer = User.withDefaultPasswordEncoder()
+                   .username("mmofer")
+                   .password("mmofer756")
+                   .roles("USER")
+                   .build();
+           UserDetails mmcard = User.withDefaultPasswordEncoder()
+                   .username("mmcard")
+                   .password("mmcard578")
+                   .roles("USER")
+                   .build();
+           UserDetails grimm = User.withDefaultPasswordEncoder()
+                   .username("grimm")
+                   .password("grimm426")
+                   .roles("USER")
+                   .build();
+           UserDetails bigga = User.withDefaultPasswordEncoder()
+                   .username("bigga")
+                   .password("bigga874")
+                   .roles("USER")
+                   .build();
+           UserDetails deumelibre = User.withDefaultPasswordEncoder()
+                   .username("deumelibre")
+                   .password("FDcmd338")
+                   .roles("ADMIN", "USER")
+                   .build();
+           return new InMemoryUserDetailsManager(mmofer, mmcard, grimm, bigga, deumelibre);
        }
        
        @Bean

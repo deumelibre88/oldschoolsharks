@@ -7,15 +7,19 @@
 <body>
 	<div th:replace="fragments/headerFragment :: header"></div>
 	
-	<h2>Se está a ver esta página é porque aconteceu cocó ao submeter o pedido!</h2>
-	<br />
-	
-	<h5>(provavelmente erro de BIOS), tente novamente mas desta vez tenha atenção a:</h5>
-	 <p th:text="*{erro}" class="alert alert-danger"/>
-	
-	<p>
-	   regressar à página anterior para tentar de novo <a th:href="@{/__*{voltar}__}">voltar</a>.
-	</p>
+	<div class="container">
+		<h2>Se está a ver esta página é porque aconteceu cocó ao submeter o pedido!</h2>
+		<br />
+		
+		<h5>(provavelmente erro de BIOS), tente novamente mas desta vez tenha atenção a:</h5>
+		 <p th:text="*{erro}" class="alert alert-danger"/>
+		
+		<p>
+		   regressar à página anterior para tentar de novo <a th:href="@{/__*{voltar}__}">voltar</a>.
+		</p>
+		<div class="mt-5 mb-5"/>
+		
+	</div>
 
 	<div th:replace="fragments/footerFragment :: footer"></div>
     </body>

@@ -4,22 +4,27 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import pt.old.school.sharks.rocketleague.torneios.model.Equipa;
 import pt.old.school.sharks.rocketleague.torneios.model.Jogador;
 import pt.old.school.sharks.rocketleague.torneios.model.Partida;
+import pt.old.school.sharks.rocketleague.torneios.model.PartidaStaging;
 import pt.old.school.sharks.rocketleague.torneios.pojo.Criterios;
 import pt.old.school.sharks.rocketleague.torneios.repository.EquipaRepository;
 import pt.old.school.sharks.rocketleague.torneios.repository.JogadorRepository;
 import pt.old.school.sharks.rocketleague.torneios.repository.PartidaRepository;
+import pt.old.school.sharks.rocketleague.torneios.repository.PartidaStagingRepository;
 
 @Controller
 public class ResultadosController {
@@ -32,6 +37,9 @@ public class ResultadosController {
 	
 	@Autowired
 	PartidaRepository partidaRepo;
+	
+	@Autowired
+	PartidaStagingRepository partidaStagingRepo;
 		
 	List<String> erros = new ArrayList<String>();
 	private static SimpleDateFormat dataPT=new SimpleDateFormat("dd/MM/yyyy");
@@ -94,5 +102,30 @@ public class ResultadosController {
 		model.addAttribute("criterios", criterios);
 		
 		return "listas";
+	}
+	
+	@GetMapping(value="/aprovarPartida")
+	public String onAprovarPartida(Model model) {
+		List<PartidaStaging> partidas = partidaStagingRepo.getPorAprovar();
+		model.addAttribute("partidas", partidas);
+		model.addAttribute("aprovadas", new ArrayList<String>());
+		return "aprovarPartida";
+	}
+	
+	@PostMapping(value="/aprovarPartida")
+	@Transactional
+	public String aprovarPartidas(Model model, @RequestParam  List<Integer> aprovadas) throws ParseException {
+		aprovadas.get(0);
+		List<PartidaStaging> partidasStaging = (List<PartidaStaging>) partidaStagingRepo.findAllById(aprovadas);
+		List<Partida> novasPartidasAprovadas = partidasStaging.stream().
+				map( p -> new Partida(p.getId(), p.getEquipaAzul(), p.getEquipaLaranja(), p.getGolosAzul(), p.getGolosLaranja(), p.getVencedor(), p.getData())).collect(Collectors.toList());
+		novasPartidasAprovadas.get(0);
+		partidaRepo.saveAll(novasPartidasAprovadas);
+		for(PartidaStaging p : partidasStaging) {
+			p.setAprovado(true);
+		}
+		partidaStagingRepo.saveAll(partidasStaging);
+		return onAprovarPartida(model);
+		
 	}
 }

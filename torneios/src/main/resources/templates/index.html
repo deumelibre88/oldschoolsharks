@@ -13,12 +13,112 @@
 		<div class="ln-title">&#218;ltimas partidas</div>
 		<div class="news-ticker">
 			<div class="news-ticker-contant">
-				<div th:each="p : ${resultados}" class="nt-item">
+				<div th:each="p : ${partidas}" class="nt-item">
 				 <span class="strategy">RL</span> 
 					<p th:text="${p.equipaAzul.J1.nick + ' & ' + p.equipaAzul.J2.nick + ' ' + p.golosAzul + '-' + p.golosLaranja + ' ' + p.equipaLaranja.J1.nick + ' & ' + p.equipaLaranja.J2.nick}"th:remove="tag"></p>
 				</div>
 			</div>
 		</div>
+	</div>
+	
+	<div sec:authorize="hasRole('ROLE_USER')" class="container">
+		<h3 th:if="*{pedidoSubmetidoComSucesso}" class="alert alert-success">Partida Registada com Sucesso!</h3>
+		
+		<div class="section-title mt-5">
+			<h4 class="container alert alert-secondary">Registar partida provisória</h4>
+		</div>
+		
+		<div th:unless="${#lists.isEmpty(resultados)}">
+			<h3>Resultados de Hoje:</h3>
+			<table class="table table-hover table-striped table-sm">
+			    <tr>
+			        <th>Equipa Azul</th>
+			        <th>Resultado</th>
+			        <th>Equipa Laranja</th>
+			    </tr>
+			    <tr th:each="p : ${resultados}">
+			        <td class="align-middle" th:text="${p.equipaAzul.J1.nick + ' & ' + p.equipaAzul.J2.nick}" th:classappend="${p.vencedor == p.equipaAzul.id} ? 'table-success' : ''"></td>
+			        <td class="align-middle" th:text="${p.golosAzul + ' - ' + p.golosLaranja}"></td>
+			        <td class="align-middle" th:text="${p.equipaLaranja.J1.nick + ' & ' + p.equipaLaranja.J2.nick}" th:classappend="${p.vencedor == p.equipaLaranja.id} ? 'table-success' : ''"></td>
+			    </tr>
+			</table>
+			<br>
+		</div>
+	
+		<form action="#" th:action="@{/criarPartidaProvisoria}" th:object="${partidaStaging}" method="POST">
+		
+			<div class="row">
+				<div class="col-lg-3 col-md-6">
+					<h4>Data da partida:</h4>
+					<br />
+					<input id="date" placeholder="DD/MMM/YYY" type="text" th:field="*{data}"/>
+				</div>
+			
+				<div class="col-lg-4 col-md-6">
+					<h3><span class="badge badge-primary">Equipa Azul</span></h3>
+					<br />
+					<div th:each="jogador : ${jogadores}" th:required="required">
+				    <label class="btn btn-primary active ">
+						<input type="checkbox" 
+						   name="equipa_azul"
+				           th:text="${jogador.nick}"
+				           th:value="${jogador.id}">
+					</label>
+					<br />
+					</div>
+					
+					<br />
+					<label><span class="badge badge-pill badge-primary">golos:</span></label><br />
+					<div class="btn-group btn-group-toggle" data-toggle="buttons">
+						<label class="btn btn-primary btn-sm"><input type="radio" name="resultado_azul" th:text="0" th:value="0" th:required="required"/></label>
+						<label class="btn btn-primary btn-sm"><input type="radio" name="resultado_azul" th:text="1" th:value="1" th:required="required"/></label>
+						<label class="btn btn-primary btn-sm"><input type="radio" name="resultado_azul" th:text="2" th:value="2" th:required="required"/></label>
+						<label class="btn btn-primary btn-sm"><input type="radio" name="resultado_azul" th:text="3" th:value="3" th:required="required"/></label>
+						<label class="btn btn-primary btn-sm"><input type="radio" name="resultado_azul" th:text="4" th:value="4" th:required="required"/></label>
+						<label class="btn btn-primary btn-sm"><input type="radio" name="resultado_azul" th:text="5" th:value="5" th:required="required"/></label>
+						<label class="btn btn-primary btn-sm"><input type="radio" name="resultado_azul" th:text="6" th:value="6" th:required="required"/></label>
+						<label class="btn btn-primary btn-sm"><input type="radio" name="resultado_azul" th:text="7" th:value="7" th:required="required"/></label>
+						<label class="btn btn-primary btn-sm"><input type="radio" name="resultado_azul" th:text="8" th:value="8" th:required="required"/></label>
+						<label class="btn btn-primary btn-sm"><input type="radio" name="resultado_azul" th:text="9" th:value="9" th:required="required"/></label>
+						<label class="btn btn-primary btn-sm"><input type="radio" name="resultado_azul" th:text="10" th:value="10" th:required="required"/></label>					
+					</div>
+				</div>
+				
+				<div class="col-lg-4 col-md-6">
+					<h3><span class="badge badge-warning">Equipa Laranja</span></h3>
+					<br />
+					<div th:each="jogador : ${jogadores}">
+				    <label class="btn btn-warning active ">
+						<input type="checkbox" 
+						   name="equipa_laranja"
+				           th:text="${jogador.nick}"
+				           th:value="${jogador.id}">
+					</label>
+					<br />
+					</div>
+					
+					<br />
+					<label><span class="badge badge-pill badge-warning">golos:</span></label><br />
+					<div class="btn-group btn-group-toggle" data-toggle="buttons">
+						<label class="btn btn-warning btn-sm"><input type="radio" name="resultado_laranja" th:text="0" th:value="0" th:required="required"/></label>
+						<label class="btn btn-warning btn-sm"><input type="radio" name="resultado_laranja" th:text="1" th:value="1" th:required="required"/></label>
+						<label class="btn btn-warning btn-sm"><input type="radio" name="resultado_laranja" th:text="2" th:value="2" th:required="required"/></label>
+						<label class="btn btn-warning btn-sm"><input type="radio" name="resultado_laranja" th:text="3" th:value="3" th:required="required"/></label>
+						<label class="btn btn-warning btn-sm"><input type="radio" name="resultado_laranja" th:text="4" th:value="4" th:required="required"/></label>
+						<label class="btn btn-warning btn-sm"><input type="radio" name="resultado_laranja" th:text="5" th:value="5" th:required="required"/></label>
+						<label class="btn btn-warning btn-sm"><input type="radio" name="resultado_laranja" th:text="6" th:value="6" th:required="required"/></label>
+						<label class="btn btn-warning btn-sm"><input type="radio" name="resultado_laranja" th:text="7" th:value="7" th:required="required"/></label>
+						<label class="btn btn-warning btn-sm"><input type="radio" name="resultado_laranja" th:text="8" th:value="8" th:required="required"/></label>
+						<label class="btn btn-warning btn-sm"><input type="radio" name="resultado_laranja" th:text="9" th:value="9" th:required="required"/></label>
+						<label class="btn btn-warning btn-sm"><input type="radio" name="resultado_laranja" th:text="10" th:value="10" th:required="required"/></label>
+					</div>
+				</div>
+			</div>
+		
+			<br /><br /><br />
+			<button type="submit" name="registar" class="btn btn-success btn btn-primary btn-lg float-right">registar partida</button>
+			<br /><br /><br />
+		</form>
 	</div>
 	
 	<section class="feature-section spad">
@@ -65,5 +165,6 @@
 	</section>
 	
 	<div th:replace="fragments/footerFragment :: footer"></div>
+	<div th:replace="fragments/datePickerScripts :: datePickerScripts"></div>
     </body>
 </html>
