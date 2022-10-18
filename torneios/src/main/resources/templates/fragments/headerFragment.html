@@ -1,0 +1,32 @@
+<th:block th:fragment="header">
+	<!-- Page Preloder -->
+	<div id="preloder">
+		<div class="loader"></div>
+	</div>
+
+	<!-- Header section -->
+	<header class="header-section">
+		<div class="container">
+			<!-- logo -->
+			<a class="site-logo" href="./">
+				<img src="img/index_logo.png" alt="">
+			</a>
+			<div class="user-panel">
+				<a href="./login">Login</a>
+			</div>
+			<!-- responsive -->
+			<div class="nav-switch">
+				<i class="fa fa-bars"></i>
+			</div>
+			<!-- site menu -->
+			<nav class="main-menu">
+				<ul>
+					<li><a href="./">Home</a></li>
+					<li><a href="./resultados">Resultados</a></li>
+					<li sec:authorize="hasRole('ROLE_ADMIN')"><a href="./aprovarPartida">Aprovar Partida</a></li>
+					<li sec:authorize="hasRole('ROLE_ADMIN')"><a href="./criarPartida">Criar Partida</a></li>
+				</ul>
+			</nav>
+		</div>
+	</header>
+</th:block>

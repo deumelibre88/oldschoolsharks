@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+	<title>OSS - Flex Zone!</title>
+	<div th:replace="fragments/headFragment :: head"></div>
+</head>
+<body>
+	<div th:replace="fragments/headerFragment :: header"></div>
+	
+	<div class="section-title mt-5">
+		<h1 th:text="*{jogador.nick}" class="container alert alert-secondary" />
+	</div>
+	
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-3 col-md-6 mt-5">
+				<div class="review-item">
+					<div class="review-cover set-bg" data-setbg="img/review/1.jpg" style="background-image: url(&quot;img/review/1.jpg&quot;);">
+						<div class="score green" th:text="*{estatisticaJogador.percentagem} + '%'">53%</div>
+					</div>
+					<div class="review-text">
+						<h5 th:text="*{jogador.nick}" />
+						<p>o que era fixe adicionar aqui?</p>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-3 col-md-6 mt-5">
+	            <ul>
+	                <li><span>Jogos: </span><th:block th:utext="*{estatisticaJogador.tJogos}"/></li>
+	                <li><span>Jogos (Rocket League): </span><th:block th:utext="*{estatisticaJogador.tJogosRL}"/></li>
+	                <li><span>Jogos (Fifa): </span> 0</li>
+	                <li><span>Vitórias: </span><th:block th:utext="*{estatisticaJogador.vitorias}"/></li>
+	                <li><span>Vitórias (Rocket League): </span><th:block th:utext="*{estatisticaJogador.vRL}"/></li>
+	                <li><span>Vitórias (Fifa): </span> 0</li>
+	            </ul>
+	        </div>
+	        <div class="col-lg-6 col-md-6">
+	        	<h4>Ultimos resultados:</h4>
+				<table class="table table-hover table-striped table-sm mt-3">
+				    <tr>
+				    	<th class="section-title">Jogo</th>
+				        <th class="section-title">Equipa Azul</th>
+				        <th class="section-title">- </th>
+				        <th class="section-title">Equipa Laranja</th>
+				    </tr>
+				    <tr th:each="p : ${ultimasPartidas}">
+				    	<td class="align-middle" ><span class="badge badge-pill badge-success">Rocket League
+				    	</span>
+				        <td class="align-middle" th:text="${p.equipaAzul.J1.nick + ' & ' + p.equipaAzul.J2.nick}" th:classappend="${p.vencedor == p.equipaAzul.id} ? 'table-success' : ''"></td>
+				        <td class="align-middle" th:text="${p.golosAzul + ' - ' + p.golosLaranja}"></td>
+				        <td class="align-middle" th:text="${p.equipaLaranja.J1.nick + ' & ' + p.equipaLaranja.J2.nick}" th:classappend="${p.vencedor == p.equipaLaranja.id} ? 'table-success' : ''"></td>
+				    </tr>
+				</table>
+			</div>
+	    </div>		
+	</div>
+
+	<div th:replace="fragments/footerFragment :: footer"></div>
+	<div th:replace="fragments/datePickerScripts :: datePickerScripts"></div>	
+</body>
+</html>

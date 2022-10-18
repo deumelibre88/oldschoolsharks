@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+	<title>OSS - Resultados!</title>
+	<div th:replace="fragments/headFragment :: head"></div>
+</head>
+<body>
+	<div th:replace="fragments/headerFragment :: header"></div>
+	
+	<form action="#" th:action="@{/aprovarPartida}" th:object="${aprovadas}" method="POST">
+		<div class="container">
+			
+			<h3>Partidas por aprovar</h3>
+			<table class="table table-hover table-striped table-sm">
+			    <tr>
+			    	<th>Data</th>
+			        <th>Equipa Azul</th>
+			        <th>Resultado</th>
+			        <th>Equipa Laranja</th>
+			        <th>Criador</th>
+			        <th>Aprovado</th>
+			    </tr>
+			    <tr th:each="p, iterStat : ${partidas}">
+			   		<td class="align-middle" th:text="${#dates.format(p.data, 'dd/MM/yyyy')}"></td>
+			        <td class="align-middle" th:text="${p.equipaAzul.J1.nick + ' & ' + p.equipaAzul.J2.nick}" th:classappend="${p.vencedor == p.equipaAzul.id} ? 'table-success' : ''"></td>
+			        <td class="align-middle" th:text="${p.golosAzul + ' - ' + p.golosLaranja}"></td>
+			        <td class="align-middle" th:text="${p.equipaLaranja.J1.nick + ' & ' + p.equipaLaranja.J2.nick}" th:classappend="${p.vencedor == p.equipaLaranja.id} ? 'table-success' : ''"></td>
+			        <td class="align-middle" th:text="${p.criador}"></td>
+			        <td class="align-middle"><input type="checkbox" name="aprovadas" th:value="${p.id}" th:checked="${p.aprovado}" /></td>
+			    </tr>
+			</table>
+			
+			<br /><br /><br />
+			<button type="submit" name="registar" class="btn btn-success btn btn-primary btn-lg float-right">aprovar partidas</button>
+			<br /><br /><br />
+		</div>
+	</form>
+	
+	<div th:replace="fragments/footerFragment :: footer"></div>
+	<div th:replace="fragments/datePickerScripts :: datePickerScripts"></div>	
+</body>
+</html>
